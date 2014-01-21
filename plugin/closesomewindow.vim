@@ -1,12 +1,25 @@
 scriptencoding utf-8
 
-" This script provides a function that enable some window closing without
+" This script provides a command that enable some window closing without
 " focus to the target window.
 
-function! CloseSomeWindow(filter) abort
+command! -nargs=1 -bang CloseSomeWindow
+\	call <SID>call(<f-args>, '<bang>' == '!')
+
+function! s:call(args, bang)
+	let [filterType, filterStr] = s:parseArguments(a:args)
+	call s:closeSomeWindow(filterStr, filterType, a:bang)
+endfunction
+
+function! s:parseArguments(args)
+	let parts = matchlist(a:args, '\v^%(-(s%(cript)?|f%(unction)?)\s+)?(.+)$')
+	return [parts[1][0], parts[2]]
+endfunction
+
+function! s:closeSomeWindow(filter, filterType, needDialog) abort
 " Close some window without focus to the target window.
 " If target windows exist more than one, This function ask you.
-"
+" {{{
 " @param	filter
 " 	Close a window that fill this condition. If not exists filling this
 " 	condition, this function does nothing.
@@ -16,22 +29,20 @@ function! CloseSomeWindow(filter) abort
 " 	If it's a funcref: be used filtering. This funcref retrieves argument
 " 	is windows numbers list, and must returns windows numbers list that
 " 	filtering result.
+" }}}
 
 	let winnrs = range(1, tabpagewinnr(tabpagenr(), '$'))
 
-	let filterType = type(a:filter)
-	if filterType == type(function("tr"))
-		let winnrs = a:filter(winnrs)
-	elseif filterType == type('')
-		call filter(winnrs, a:filter)
+	if(a:filterType ==# 'f')
+		let winnrs = eval(a:filter . '(winnrs)')
 	else
-		throw "The argument must be string or funcref."
+		call filter(winnrs, a:filter)
 	endif
 
 	let winnrsLen = len(winnrs)
 	if winnrsLen == 0
 		return
-	elseif winnrsLen == 1
+	elseif (winnrsLen == 1) || a:needDialog
 		call s:do(winnrs[0])
 	else	" greater than
 		let chooseWinnr = s:dialog(winnrs)
