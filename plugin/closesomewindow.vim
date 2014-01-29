@@ -1,5 +1,8 @@
 scriptencoding utf-8
 
+let s:cpoptions_bak = &cpoptions
+set cpoptions&vim
+
 " This script provides a command that enable some window closing without
 " focus to the target window.
 
@@ -142,3 +145,6 @@ function! s:do(winnr) abort
 	execute string(a:winnr) . "wincmd w"
 	close
 endfunction
+
+let &cpoptions = s:cpoptions_bak
+unlet s:cpoptions_bak
