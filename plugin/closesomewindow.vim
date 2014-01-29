@@ -1,8 +1,5 @@
 scriptencoding utf-8
 
-" This script provides a command that enable some window closing without
-" focus to the target window.
-
 command! -nargs=1 -bang CloseSomeWindow
 \	call <SID>call(<f-args>, '<bang>' == '!')
 
