@@ -1,0 +1,82 @@
+*closesomewindow.txt*	Close a window that is matched the filter expression.
+
+CloseSomeWindow
+								by AmaiSaeta
+
+==============================================================================
+CONTENTS					*closesomewindow-contents*
+
+Introduction	|closesomewindow-introduction|
+Usage		|closesomewindow-usage|
+Interface	|closesomewindow-interface|
+Changelog	|closesomewindow-changelog|
+
+==============================================================================
+INTRODUCTION					*closesomewindow-introduction*
+
+|closesomewindow.vim| provides a Ex command that close a window suitable for
+condition.
+
+Latest version:
+	    https://github.com/AmaiSaeta/closesomewindow.vim
+
+==============================================================================
+USAGE							*closesomewindow-usage*
+
+When you opened 5 window:
+	window number | displayed buffer
+	--------------+-----------------
+	            1 | "foo.txt"
+	            2 | "bar.txt"
+	            3 | Help
+	            4 | Quickfix list
+	            5 | "hoge.vim"
+	            6 | "fuga.vim"
+
+This command close the No.2 window. >
+	:CloseSomeWindow v:val == 2
+<
+This command close the help (No.3) window. >
+	:CloseSomeWindow getwinvar(v:val, '&filetype') ==# 'help'
+<
+This command asks you the window which should be closed. >
+	:CloseSomeWindow! getwinvar(v:val, '&filetype') ==# 'vim'
+<
+For example, I Recomend that you use it as this. >
+	" Close window that display Quickfix list or help.
+	" (Be finction-ized because :map commands can't accepted long long RHS.)
+	function! ExecuteCloseSomeWindow()
+		CloseSomeWindow -script
+		\	(getwinvar(v:val, '&filetype') ==# 'qf')
+		\		|| (getwinvar(v:val, '&filetype') ==# 'help'
+		\			&& !getwinvar(v:val, '&modifiable'))
+	endfunction
+	:nnoremap <C-h> :<C-u>call ExecuteCloseSomeWindow()<CR>
+<
+
+==============================================================================
+INTERFACE					*closesomewindow-interface*
+
+:CloseSomeWindow[!] [-s | -script | -f | -function] {filter} *:CloseSomeWindow*
+	Close the window on the current tabpage.
+	The target windows are determined by the {filter}.
+	When you specify "-script" or "-s", {filter} is interpreted as an
+	expression like |filter()|'s 2nd argument. |v:val| of {filter} inside,
+	will be replaced in each window number.
+	When you specify "-function" or "-f", {filter} is interpreted as the
+	function name. This function must takes an argument that is a list of
+	window numbers, and returns a list that contain window numbers of
+	candidate close.
+	If you omit "-script", "-s", "-function" or "-f", {filter} is
+	interpreted as the expression (same "-script").
+	If there is more than one thing to meet the {filter}, closes youngest
+	number window. When you specify [!], asks you close the window which.
+
+==============================================================================
+CHANGELOG					*closesomewindow-changelog*
+
+1.00.XXXXXXXX
+	- The first release!
+
+==============================================================================
+ vim:tw=78:ts=8:ft=help:norl:
