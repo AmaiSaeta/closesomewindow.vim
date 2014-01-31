@@ -75,7 +75,7 @@ INTERFACE					*closesomewindow-interface*
 ==============================================================================
 CHANGELOG					*closesomewindow-changelog*
 
-1.00.XXXXXXXX
+1.00.20140131
 	- The first release!
 
 ==============================================================================
