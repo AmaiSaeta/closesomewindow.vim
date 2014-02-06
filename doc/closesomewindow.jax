@@ -43,14 +43,10 @@ USAGE							*closesomewindow-usage*
 <
 例えば、以下のようにして利用する事を薦めます。 >
 	" Quickfixリスト或いはヘルプを表示しているウィンドウを閉じます。
-	" (:mapコマンドは長いRHSを受け付けない為、関数化しています。)
-	function! ExecuteCloseSomeWindow()
-		CloseSomeWindow -script
-		\	(getwinvar(v:val, '&filetype') ==# 'qf')
-		\		|| (getwinvar(v:val, '&filetype') ==# 'help'
-		\			&& !getwinvar(v:val, '&modifiable'))
-	endfunction
-	:nnoremap <C-h> :<C-u>call ExecuteCloseSomeWindow()<CR>
+	nnoremap <C-h> :<C-u>CloseSomeWindow
+	\	(index(['qf','unite','vimtest'], getwinvar(v:val,'&filetype')) != -1)
+	\		\|\| (getwinvar(v:val, '&filetype') ==# 'help'
+	\			&& !getwinvar(v:val, '&modifiable'))<CR>
 <
 
 ==============================================================================

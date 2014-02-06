@@ -44,14 +44,10 @@ This command asks you the window which should be closed. >
 <
 For example, I recommend that you use it as this. >
 	" Close window that display Quickfix list or help.
-	" (Be finction-ized because :map commands can't accepted long long RHS.)
-	function! ExecuteCloseSomeWindow()
-		CloseSomeWindow -script
-		\	(getwinvar(v:val, '&filetype') ==# 'qf')
-		\		|| (getwinvar(v:val, '&filetype') ==# 'help'
-		\			&& !getwinvar(v:val, '&modifiable'))
-	endfunction
-	:nnoremap <C-h> :<C-u>call ExecuteCloseSomeWindow()<CR>
+	nnoremap <C-h> :<C-u>CloseSomeWindow
+	\	(index(['qf','unite','vimtest'], getwinvar(v:val,'&filetype')) != -1)
+	\		\|\| (getwinvar(v:val, '&filetype') ==# 'help'
+	\			&& !getwinvar(v:val, '&modifiable'))<CR>
 <
 
 ==============================================================================
