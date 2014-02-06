@@ -42,7 +42,7 @@ This command close the help (No.3) window. >
 This command asks you the window which should be closed. >
 	:CloseSomeWindow! getwinvar(v:val, '&filetype') ==# 'vim'
 <
-For example, I Recomend that you use it as this. >
+For example, I recommend that you use it as this. >
 	" Close window that display Quickfix list or help.
 	" (Be finction-ized because :map commands can't accepted long long RHS.)
 	function! ExecuteCloseSomeWindow()
