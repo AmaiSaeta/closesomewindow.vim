@@ -71,6 +71,9 @@ INTERFACE					*closesomewindow-interface*
 ==============================================================================
 CHANGELOG					*closesomewindow-changelog*
 
+1.01.20140206
+	- Changed recommendation usage in documents.
+	- Fixed typo in English help document.
 1.00.20140131
 	- The first release!
 

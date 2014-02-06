@@ -70,6 +70,9 @@ INTERFACE					*closesomewindow-interface*
 ==============================================================================
 CHANGELOG					*closesomewindow-changelog*
 
+1.01.20140206
+	- ヘルプドキュメント内の推奨設定例を変更。
+	- typo修正。
 1.00.20140131
 	- 初版!
 
